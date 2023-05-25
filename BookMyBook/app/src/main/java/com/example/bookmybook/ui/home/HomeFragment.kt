@@ -28,11 +28,11 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView1: TextView = binding.textHome
-        val textView2: TextView = binding.textHome2
+        val textView1: TextView = binding.textNbbooks
+        val textView2: TextView = binding.textNbrents
         homeViewModel.text.observe(viewLifecycleOwner) {
-            textView1.text = "10 \n Livres"
-            textView2.text = "2 \n Prêts en cours"
+            textView1.text = "10" // Will be later the number of books from the database
+            textView2.text = "2" // Will be later the number of opened rents from the database
         }
         return root
     }
