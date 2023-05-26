@@ -104,30 +104,23 @@
         app:layout_constraintStart_toStartOf="@+id/box_books"
         app:layout_constraintTop_toBottomOf="@+id/box_books" />
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_lastscan">
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/imageView3"
             android:layout_width="140dp"
             android:layout_height="170dp"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
+            android:scaleType="centerCrop"
             android:background="@drawable/box"
             android:clipToOutline="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/_1kb5rx9rcl__sx321_bo1_204_203_200_" />
+            android:src="@drawable/_1kb5rx9rcl__sx321_bo1_204_203_200_"
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="140dp"
-            android:layout_height="170dp"
-            android:background="@drawable/box"
-            android:clipToOutline="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/_1kb5rx9rcl__sx321_bo1_204_203_200_" />
-    </FrameLayout>
+            />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
