@@ -10,11 +10,11 @@
         android:id="@+id/text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="49dp"
+        android:layout_marginTop="45dp"
         android:fontFamily="@font/inika_bold"
         android:text="@string/title"
         android:textColor="@color/black"
-        android:textSize="40sp"
+        android:textSize="38sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,6 +28,7 @@
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="50sp"
+        android:text="0"
         app:layout_constraintEnd_toEndOf="@+id/box_books"
         app:layout_constraintStart_toStartOf="@+id/box_books"
         app:layout_constraintTop_toTopOf="@+id/box_books" />
@@ -37,20 +38,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
         android:fontFamily="@font/inika_bold"
         android:text="@string/text_books"
         android:textColor="@color/black"
         android:textSize="27sp"
+        app:layout_constraintBottom_toBottomOf="@+id/box_books"
         app:layout_constraintEnd_toEndOf="@+id/box_books"
         app:layout_constraintStart_toStartOf="@+id/box_books"
         app:layout_constraintTop_toBottomOf="@+id/text_nbbooks" />
 
     <TextView
         android:id="@+id/box_books"
-        android:layout_width="140dp"
-        android:layout_height="170dp"
+        android:layout_width="130dp"
+        android:layout_height="150dp"
         android:layout_marginStart="45dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/box"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_title" />
@@ -64,6 +67,7 @@
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="50sp"
+        android:text="0"
         app:layout_constraintEnd_toEndOf="@+id/box_rents"
         app:layout_constraintStart_toStartOf="@+id/box_rents"
         app:layout_constraintTop_toTopOf="@+id/box_rents" />
@@ -73,20 +77,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
         android:fontFamily="@font/inika_bold"
         android:text="@string/text_rents"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="27sp"
+        app:layout_constraintBottom_toBottomOf="@+id/box_rents"
         app:layout_constraintEnd_toEndOf="@+id/box_rents"
         app:layout_constraintStart_toStartOf="@+id/box_rents"
         app:layout_constraintTop_toBottomOf="@+id/text_nbrents" />
 
     <TextView
         android:id="@+id/box_rents"
-        android:layout_width="140dp"
-        android:layout_height="170dp"
-        android:layout_marginTop="35dp"
+        android:layout_width="130dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="45dp"
         android:background="@drawable/box"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,31 +102,13 @@
         android:id="@+id/text_lastscan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="36dp"
         android:fontFamily="@font/inika_bold"
         android:text="@string/text_lastscan"
         android:textColor="@color/black"
         android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="@+id/box_books"
-        app:layout_constraintTop_toBottomOf="@+id/box_books" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_lastscan">
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="140dp"
-            android:layout_height="170dp"
-            android:scaleType="centerCrop"
-            android:background="@drawable/box"
-            android:clipToOutline="true"
-            android:src="@drawable/_1kb5rx9rcl__sx321_bo1_204_203_200_"
-
-            />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/box_books" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,13 +1,12 @@
 package com.example.bookmybook.ui.scan
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.content.Intent
+import android.provider.MediaStore
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.ViewModel
+
 
 class ScanViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is scan Fragment"
-    }
-    val text: LiveData<String> = _text
+
 }
