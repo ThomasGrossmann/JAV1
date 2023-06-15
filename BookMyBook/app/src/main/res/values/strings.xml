@@ -10,4 +10,5 @@
     <string name="text_lastscan">Derniers livres scannés</string>
     <string name="scan_title">Scan My Book</string>
     <string name="scan_label">Appuyer pour scanner un livre</string>
+    <string name="my_books_string">My Books</string>
 </resources>

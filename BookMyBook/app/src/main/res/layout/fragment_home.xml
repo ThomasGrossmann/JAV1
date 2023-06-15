@@ -118,7 +118,7 @@
             android:background="@drawable/box"
             android:clipToOutline="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/_1kb5rx9rcl__sx321_bo1_204_203_200_" />
+            android:src="@drawable/book_image" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -127,7 +127,7 @@
             android:background="@drawable/box"
             android:clipToOutline="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/_1kb5rx9rcl__sx321_bo1_204_203_200_" />
+            android:src="@drawable/book_image" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

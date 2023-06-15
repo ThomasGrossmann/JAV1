@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.bookmybook.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
-
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
@@ -28,12 +27,8 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView1: TextView = binding.textNbbooks
-        val textView2: TextView = binding.textNbrents
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView1.text = "10" // Will be later the number of books from the database
-            textView2.text = "2" // Will be later the number of opened rents from the database
-        }
+
+
         return root
     }
 

@@ -26,11 +26,9 @@ import java.util.concurrent.Executors
 private const val CAMERA_PERMISSION_REQUEST_CODE = 1
 
 class ScanFragment : Fragment() {
-
     private var _binding: FragmentScanBinding? = null
     private val binding get() = _binding!!
-    private lateinit var barcodeScanner: BarcodeScanner
-    private var isAlertShown = false
+    private var isScanning = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentScanBinding.inflate(inflater, container, false)
@@ -40,11 +38,13 @@ class ScanFragment : Fragment() {
 
         return binding.root
     }
+
     private fun hasCameraPermission() =
         ActivityCompat.checkSelfPermission(
             requireActivity(),
             Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED
+
     private fun requestPermission(){
         // opening up dialog to ask for camera permission
         ActivityCompat.requestPermissions(
@@ -53,49 +53,44 @@ class ScanFragment : Fragment() {
             CAMERA_PERMISSION_REQUEST_CODE
         )
     }
-    private fun bindCameraUseCases() {
 
+    private fun bindCameraUseCases() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
         cameraProviderFuture.addListener({
             val options = BarcodeScannerOptions.Builder().setBarcodeFormats(
                 Barcode.FORMAT_EAN_13
             ).build()
-// getClient() creates a new instance of the MLKit barcode scanner with the specified options
             val scanner = BarcodeScanning.getClient(options)
 
-// setting up the analysis use case
             val analysisUseCase = ImageAnalysis.Builder()
                 .build()
 
-// define the actual functionality of our analysis use case
             analysisUseCase.setAnalyzer(
-                // newSingleThreadExecutor() will let us perform analysis on a single worker thread
                 Executors.newSingleThreadExecutor()
             ) { imageProxy ->
                 processImageProxy(scanner, imageProxy)
             }
             val cameraProvider = cameraProviderFuture.get()
 
-            // setting up the preview use case
             val previewUseCase = Preview.Builder()
                 .build()
                 .also {
                     it.setSurfaceProvider(binding.previewView.surfaceProvider)
                 }
 
-            // configure to use the back camera
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
             cameraProvider.bindToLifecycle(this, cameraSelector, previewUseCase, analysisUseCase)
 
         }, ContextCompat.getMainExecutor(requireContext()))
     }
+
     private fun processImageProxy(
         barcodeScanner: BarcodeScanner,
         imageProxy: ImageProxy
     ) {
-
+        if (isScanning) return
         imageProxy.image?.let { image ->
             val inputImage = InputImage.fromMediaImage(image, imageProxy.imageInfo.rotationDegrees)
             barcodeScanner.process(inputImage)
@@ -108,19 +103,20 @@ class ScanFragment : Fragment() {
                 }
         }
     }
+
     private fun showBarcodeResult(barcode: Barcode?) {
-        if (!isAlertShown) {
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Barcode Scanned")
-            builder.setMessage(barcode?.rawValue)
-            builder.setPositiveButton("OK", null)
-            builder.setOnDismissListener {
-                isAlertShown = false
-            }
-            builder.show()
-            isAlertShown = true
+        isScanning = false
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Barcode Scanned")
+        builder.setMessage(barcode?.rawValue)
+        builder.setPositiveButton("OK", null)
+        builder.setOnDismissListener {
+            isScanning = true
         }
+        builder.show()
+        isScanning = false
     }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -134,6 +130,7 @@ class ScanFragment : Fragment() {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
