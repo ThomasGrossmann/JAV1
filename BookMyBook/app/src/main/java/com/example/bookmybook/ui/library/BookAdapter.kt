@@ -8,12 +8,15 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import com.example.bookmybook.R
+import java.util.Collections
 import java.util.Locale
 
-class BookAdapter(private val context: Activity, private val title: Array<String>)
-    : ArrayAdapter<String>(context, R.layout.book_item, title), Filterable {
+class BookAdapter(
+    private val context: Activity,
+    private val title: MutableList<String>
+) : ArrayAdapter<String>(context, R.layout.book_item, title), Filterable {
 
-    private var filteredData: Array<String> = title.clone()
+    private var filteredData: MutableList<String> = title.toMutableList()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = context.layoutInflater
@@ -40,10 +43,10 @@ class BookAdapter(private val context: Activity, private val title: Array<String
                 val query = constraint?.toString()?.toLowerCase(Locale.getDefault())
 
                 val filteredTitles = if (query.isNullOrBlank()) {
-                    title.clone()
+                    title.toMutableList()
                 } else {
                     title.filter { it.toLowerCase(Locale.getDefault()).contains(query) }
-                        .toTypedArray()
+                        .toMutableList()
                 }
 
                 results.values = filteredTitles
@@ -52,9 +55,19 @@ class BookAdapter(private val context: Activity, private val title: Array<String
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filteredData = results?.values as? Array<String> ?: title.clone()
+                filteredData = results?.values as? MutableList<String> ?: title.toMutableList()
                 notifyDataSetChanged()
             }
+        }
+    }
+
+    override fun add(item: String?) {
+        item?.let {
+            val insertionIndex = Collections.binarySearch(title, it)
+            val index = if (insertionIndex >= 0) insertionIndex else -insertionIndex - 1
+            title.add(index, it)
+            filteredData.add(index, it)
+            notifyDataSetChanged()
         }
     }
 }
