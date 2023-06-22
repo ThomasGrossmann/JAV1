@@ -25,6 +25,7 @@ class HomeFragment : Fragment() {
 
         val bookCountText = binding.textNbbooks
         val rentCountText = binding.textNbrents
+        val noBooksText = binding.textNoBooks  // New TextView reference
         val db = DBHelper(requireContext(), null)
 
         val bookCount = db.getBooks()
@@ -34,19 +35,25 @@ class HomeFragment : Fragment() {
 
         lastAddedBooks?.use { cursor ->
             while (cursor.moveToNext()) {
-                val id = cursor.getLong(cursor.getColumnIndex(DBHelper.BOOK_COLUMN_ID))
-                val title = cursor.getString(cursor.getColumnIndex(DBHelper.BOOK_COLUMN_TITLE))
-                val isbn = cursor.getString(cursor.getColumnIndex(DBHelper.BOOK_COLUMN_ISBN))
-                val author = cursor.getString(cursor.getColumnIndex(DBHelper.BOOK_COLUMN_AUTHOR))
+                val id = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.BOOK_COLUMN_ID))
+                val title = cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.BOOK_COLUMN_TITLE))
+                val isbn = cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.BOOK_COLUMN_ISBN))
+                val author = cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.BOOK_COLUMN_AUTHOR))
 
                 val book = Book(title, isbn, author, id.toInt())
                 lastThreeBooks.add(book)
             }
         }
 
-        binding.recyclerLastBooks.apply {
-            layoutManager = GridLayoutManager(requireContext(), 3)
-            adapter = CardAdapter(lastThreeBooks)
+        if (lastThreeBooks.isEmpty()) {
+            binding.recyclerLastBooks.visibility = View.GONE
+            noBooksText.visibility = View.VISIBLE
+        } else {
+            binding.recyclerLastBooks.apply {
+                layoutManager = GridLayoutManager(requireContext(), 3)
+                adapter = CardAdapter(lastThreeBooks)
+            }
+            noBooksText.visibility = View.GONE
         }
 
         if (bookCount != null) {
@@ -61,6 +68,7 @@ class HomeFragment : Fragment() {
 
         return root
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
