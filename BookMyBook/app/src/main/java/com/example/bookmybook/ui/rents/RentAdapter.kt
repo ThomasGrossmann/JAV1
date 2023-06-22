@@ -1,5 +1,6 @@
 package com.example.bookmybook.ui.library
 
+import Rent
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -15,58 +16,37 @@ import kotlin.collections.ArrayList
 
 class RentAdapter(
     context: Context,
-    private val bookList: MutableList<Book>
-) : ArrayAdapter<Book>(context, R.layout.book_item, bookList), Filterable {
-
-    private var filteredBookList: MutableList<Book> = ArrayList()
+    private var rentList: MutableList<Rent>
+) : ArrayAdapter<Rent>(context, R.layout.rent_item, rentList), Filterable {
 
     override fun getCount(): Int {
-        return filteredBookList.size
+        return rentList.size
     }
 
-    override fun getItem(position: Int): Book {
-        return filteredBookList[position]
+    override fun getItem(position: Int): Rent {
+        return rentList[position]
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
-        val rowView = convertView ?: inflater.inflate(R.layout.book_item, parent, false)
+        val rowView = convertView ?: inflater.inflate(R.layout.rent_item, parent, false)
 
-        val titleText = rowView.findViewById<TextView>(R.id.text_list_book_title)
-        titleText.text = filteredBookList[position].title
+        val rent = rentList[position]
+
+        val rentText = rowView.findViewById<TextView>(R.id.text_list_rent)
+        rentText.text = "From " + rent.getFormattedDate(rent.startDate)
+
+        val returnDateText = rowView.findViewById<TextView>(R.id.text_list_return_date)
+        returnDateText.text = " due on the " + rent.getFormattedDate(rent.returnDate)
+
+        val contactText = rowView.findViewById<TextView>(R.id.text_list_contact)
+        contactText.text = "Rented by Anonymous"
 
         return rowView
     }
 
-    override fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val results = FilterResults()
-                val query = constraint?.toString()?.toLowerCase(Locale.getDefault())
-
-                if (query.isNullOrBlank()) {
-                    filteredBookList = ArrayList(bookList)
-                } else {
-                    filteredBookList = bookList.filter {
-                        it.title.toLowerCase(Locale.getDefault()).contains(query)
-                    }.toMutableList()
-                }
-
-                results.values = filteredBookList
-                results.count = filteredBookList.size
-                return results
-            }
-
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filteredBookList = results?.values as? MutableList<Book> ?: ArrayList()
-                notifyDataSetChanged()
-            }
-        }
-    }
-
-    fun addBook(book: Book) {
-        bookList.add(book)
-        bookList.sortBy { it.title } // Sort the book list by title
+    fun updateRentList(newRentList: MutableList<Rent>) {
+        rentList = newRentList
         notifyDataSetChanged()
     }
 }

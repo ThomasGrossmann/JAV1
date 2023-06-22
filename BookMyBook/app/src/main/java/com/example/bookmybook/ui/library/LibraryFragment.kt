@@ -34,7 +34,7 @@ class LibraryFragment : Fragment() {
         searchView = binding.myBooksSearch
         listView = binding.myBooksLv
 
-        listAdapter = BookAdapter(requireActivity(), bookList)
+        listAdapter = BookAdapter(requireContext(), bookList)
         listView.adapter = listAdapter
 
         val db = DBHelper(requireContext(), null)
