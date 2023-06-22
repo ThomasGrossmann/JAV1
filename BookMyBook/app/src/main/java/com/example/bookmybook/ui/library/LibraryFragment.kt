@@ -118,7 +118,7 @@ class LibraryFragment : Fragment() {
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Please fill all the fields.",
+                    "Please fill all the fields correctly.",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -134,6 +134,6 @@ class LibraryFragment : Fragment() {
     }
 
     private fun inputCheck(title: String, author: String, isbn: String): Boolean {
-        return !(title.isEmpty() || author.isEmpty() || isbn.isEmpty())
+        return !(title.isEmpty() || author.isEmpty() || isbn.isEmpty() || isbn.length != 13)
     }
 }
