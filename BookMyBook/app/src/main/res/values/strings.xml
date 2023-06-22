@@ -5,10 +5,11 @@
     <string name="title_bookings">Bookings</string>
     <string name="title_scan">Scan</string>
     <string name="title">Welcome !</string>
-    <string name="text_books">Livres</string>
-    <string name="text_rents">Prêts en cours</string>
-    <string name="text_lastscan">Derniers livres ajoutés</string>
+    <string name="text_books">Books</string>
+    <string name="text_rents">Current rents</string>
+    <string name="text_lastscan">Last added books</string>
     <string name="scan_title">Scan My Book</string>
-    <string name="scan_label">Appuyer pour scanner un livre</string>
     <string name="my_books_string">My Books</string>
+    <string name="no_books">Currently no books in the database</string>
+    <string name="urgent_rent">Urgent rent</string>
 </resources>
