@@ -25,7 +25,8 @@ class HomeFragment : Fragment() {
 
         val bookCountText = binding.textNbbooks
         val rentCountText = binding.textNbrents
-        val noBooksText = binding.textNoBooks  // New TextView reference
+        val noBooksText = binding.textNoBooks
+        //val urgentText = binding.textUrgentvalue
         val db = DBHelper(requireContext(), null)
 
         val bookCount = db.getBooks()
@@ -68,7 +69,6 @@ class HomeFragment : Fragment() {
 
         return root
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
