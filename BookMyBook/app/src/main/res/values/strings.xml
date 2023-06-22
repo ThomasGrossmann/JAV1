@@ -7,7 +7,7 @@
     <string name="title">Welcome !</string>
     <string name="text_books">Livres</string>
     <string name="text_rents">Prêts en cours</string>
-    <string name="text_lastscan">Derniers livres scannés</string>
+    <string name="text_lastscan">Derniers livres ajoutés</string>
     <string name="scan_title">Scan My Book</string>
     <string name="scan_label">Appuyer pour scanner un livre</string>
     <string name="my_books_string">My Books</string>
