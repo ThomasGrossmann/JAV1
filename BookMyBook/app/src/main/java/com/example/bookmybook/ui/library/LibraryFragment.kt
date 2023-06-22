@@ -1,12 +1,12 @@
 package com.example.bookmybook.ui.library
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ListView
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -19,9 +19,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 class LibraryFragment : Fragment() {
     private var _binding: FragmentLibraryBinding? = null
     private val binding get() = _binding!!
+    private lateinit var listAdapter: BookAdapter
     private val bookList: MutableList<Book> = mutableListOf()
-
-    @SuppressLint("Range")
+    private lateinit var searchView: SearchView
+    private lateinit var listView: ListView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,25 +31,26 @@ class LibraryFragment : Fragment() {
         _binding = FragmentLibraryBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val searchView = binding.myBooksSearch
-        val listView = binding.myBooksLv
+        searchView = binding.myBooksSearch
+        listView = binding.myBooksLv
 
-        val listAdapter = BookAdapter(requireActivity(), bookList)
+        listAdapter = BookAdapter(requireActivity(), bookList)
         listView.adapter = listAdapter
 
-        // Fetch books from the database and populate the bookList
         val db = DBHelper(requireContext(), null)
         val cursor = db.getBooks()
         cursor?.let {
             while (it.moveToNext()) {
-                val title = it.getString(it.getColumnIndex(DBHelper.BOOK_COLUMN_TITLE))
-                val isbn = it.getString(it.getColumnIndex(DBHelper.BOOK_COLUMN_ISBN))
-                val author = it.getString(it.getColumnIndex(DBHelper.BOOK_COLUMN_AUTHOR))
-                val id = it.getInt(it.getColumnIndex(DBHelper.BOOK_COLUMN_ID))
+                val title = it.getString(it.getColumnIndexOrThrow(DBHelper.BOOK_COLUMN_TITLE))
+                val isbn = it.getString(it.getColumnIndexOrThrow(DBHelper.BOOK_COLUMN_ISBN))
+                val author = it.getString(it.getColumnIndexOrThrow(DBHelper.BOOK_COLUMN_AUTHOR))
+                val id = it.getInt(it.getColumnIndexOrThrow(DBHelper.BOOK_COLUMN_ID))
                 val book = Book(title, isbn, author, id)
                 bookList.add(book)
             }
             it.close()
+
+            listAdapter.notifyDataSetChanged()
         }
         db.close()
 
@@ -66,7 +68,7 @@ class LibraryFragment : Fragment() {
 
         val addButton = binding.fab
         addButton.setOnClickListener {
-            showAddBookBottomSheet(listAdapter)
+            showAddBookBottomSheet()
         }
 
         return root
@@ -77,35 +79,52 @@ class LibraryFragment : Fragment() {
         _binding = null
     }
 
-    private fun showAddBookBottomSheet(listAdapter: BookAdapter) {
+    private fun showAddBookBottomSheet() {
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         val view = layoutInflater.inflate(R.layout.bottom_sheet_dialog, null)
         bottomSheetDialog.setContentView(view)
 
         val editTextBookTitle = view.findViewById<EditText>(R.id.editTextBookTitle)
+        editTextBookTitle.isSingleLine = true
         val editTextBookAuthor = view.findViewById<EditText>(R.id.editTextBookAuthor)
+        editTextBookAuthor.isSingleLine = true
         val editTextBookIsbn = view.findViewById<EditText>(R.id.editTextBookIsbn)
+        editTextBookIsbn.inputType = android.text.InputType.TYPE_CLASS_NUMBER
+        editTextBookIsbn.isSingleLine = true
         val buttonAddBook = view.findViewById<Button>(R.id.buttonAddBook)
 
         buttonAddBook.setOnClickListener {
-            val db = DBHelper(requireContext(), null)
-            val bookTitle = editTextBookTitle.text.toString()
-            val bookAuthor = editTextBookAuthor.text.toString()
-            val bookIsbn = editTextBookIsbn.text.toString()
+            if (inputCheck(
+                    editTextBookTitle.text.toString(),
+                    editTextBookAuthor.text.toString(),
+                    editTextBookIsbn.text.toString()
+                )
+            ) {
+                val db = DBHelper(requireContext(), null)
+                val bookTitle = editTextBookTitle.text.toString()
+                val bookAuthor = editTextBookAuthor.text.toString()
+                val bookIsbn = editTextBookIsbn.text.toString()
 
-            val book = Book(bookTitle, bookIsbn, bookAuthor)
-            db.addBook(bookTitle, bookAuthor, bookIsbn)
+                val book = Book(bookTitle, bookIsbn, bookAuthor)
+                db.addBook(bookTitle, bookIsbn, bookAuthor)
 
-            Toast.makeText(requireContext(), "Book successfully added.", Toast.LENGTH_SHORT).show()
+                listAdapter.addBook(book)
 
-            // Add the new book to the adapter instead of clearing it
-            listAdapter.add(book)
+                listAdapter.notifyDataSetChanged()
 
-            bottomSheetDialog.dismiss() // Close the bottom sheet
+                Toast.makeText(requireContext(), "Book successfully added.", Toast.LENGTH_SHORT).show()
+
+                bottomSheetDialog.dismiss()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Please fill all the fields.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
         bottomSheetDialog.setOnDismissListener {
-            // Clear the input fields when the bottom sheet is dismissed
             editTextBookTitle.text.clear()
             editTextBookAuthor.text.clear()
             editTextBookIsbn.text.clear()
@@ -114,5 +133,7 @@ class LibraryFragment : Fragment() {
         bottomSheetDialog.show()
     }
 
-
+    private fun inputCheck(title: String, author: String, isbn: String): Boolean {
+        return !(title.isEmpty() || author.isEmpty() || isbn.isEmpty())
+    }
 }
