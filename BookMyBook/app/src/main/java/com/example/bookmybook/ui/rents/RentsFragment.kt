@@ -22,16 +22,8 @@ class BookingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val bookingsViewModel =
-            ViewModelProvider(this)[BookingsViewModel::class.java]
-
         _binding = FragmentBookingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val textView: TextView = binding.textBookings
-        bookingsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
     }
 

@@ -20,7 +20,9 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
                 + RENT_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + RENT_COLUMN_BOOK_ID + " INTEGER, "
                 + RENT_COLUMN_RETURN_DATE + " TEXT, "
-                + RENT_COLUMN_CONTACT_ID + " INTEGER" + ")")
+                + RENT_COLUMN_START_DATE + " TEXT, "
+                + RENT_COLUMN_CONTACT_ID + " INTEGER, "
+                + "FOREIGN KEY (" + RENT_COLUMN_BOOK_ID + ") REFERENCES " + BOOKS_TABLE_NAME + " (" + BOOK_COLUMN_ID + "))")
         db?.execSQL(rentQuery)
     }
 
@@ -54,10 +56,11 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     }
 
 
-    fun addRent(bookId: Long, returnDate: String, contactId: Long) {
+    fun addRent(bookId: Long, returnDate: String, startDate: String, contactId: Long) {
         val values = ContentValues()
         values.put(RENT_COLUMN_BOOK_ID, bookId)
         values.put(RENT_COLUMN_RETURN_DATE, returnDate)
+        values.put(RENT_COLUMN_START_DATE, startDate)
         values.put(RENT_COLUMN_CONTACT_ID, contactId)
 
         val db = this.writableDatabase
@@ -85,6 +88,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         const val RENT_COLUMN_ID = "id"
         const val RENT_COLUMN_BOOK_ID = "book_id"
         const val RENT_COLUMN_RETURN_DATE = "return_date"
+        const val RENT_COLUMN_START_DATE = "start_date"
         const val RENT_COLUMN_CONTACT_ID = "contact_id"
     }
 
