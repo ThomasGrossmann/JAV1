@@ -8,7 +8,7 @@ class CardViewHolder (private val cardCellBinding: CardCellBinding) : RecyclerVi
 {
     fun bindBook(book: Book) {
         cardCellBinding.textTitlePo.text = book.title
-        cardCellBinding.textAuthorPo.text = book.author
+        cardCellBinding.textAuthorPo.text = "by : " + book.author
         cardCellBinding.textIsbnPo.text = book.isbn
     }
 }
