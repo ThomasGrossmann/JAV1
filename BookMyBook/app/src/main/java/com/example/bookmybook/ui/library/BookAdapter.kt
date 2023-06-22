@@ -8,22 +8,23 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import com.example.bookmybook.R
+import com.example.bookmybook.models.Book
 import java.util.Collections
 import java.util.Locale
 
 class BookAdapter(
     private val context: Activity,
-    private val title: MutableList<String>
-) : ArrayAdapter<String>(context, R.layout.book_item, title), Filterable {
+    private val bookList: MutableList<Book>
+) : ArrayAdapter<Book>(context, R.layout.book_item, bookList), Filterable {
 
-    private var filteredData: MutableList<String> = title.toMutableList()
+    private var filteredData: MutableList<Book> = bookList.toMutableList()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = context.layoutInflater
         val rowView = inflater.inflate(R.layout.book_item, null, true)
 
         val titleText = rowView.findViewById(R.id.text_list_book_title) as TextView
-        titleText.text = filteredData[position]
+        titleText.text = filteredData[position].title
 
         return rowView
     }
@@ -32,7 +33,7 @@ class BookAdapter(
         return filteredData.size
     }
 
-    override fun getItem(position: Int): String {
+    override fun getItem(position: Int): Book {
         return filteredData[position]
     }
 
@@ -43,9 +44,9 @@ class BookAdapter(
                 val query = constraint?.toString()?.toLowerCase(Locale.getDefault())
 
                 val filteredTitles = if (query.isNullOrBlank()) {
-                    title.toMutableList()
+                    bookList.toMutableList()
                 } else {
-                    title.filter { it.toLowerCase(Locale.getDefault()).contains(query) }
+                    bookList.filter { it.title.toLowerCase(Locale.getDefault()).contains(query) }
                         .toMutableList()
                 }
 
@@ -55,19 +56,29 @@ class BookAdapter(
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filteredData = results?.values as? MutableList<String> ?: title.toMutableList()
+                filteredData = results?.values as? MutableList<Book> ?: bookList.toMutableList()
                 notifyDataSetChanged()
             }
         }
     }
 
-    override fun add(item: String?) {
+    override fun add(item: Book?) {
         item?.let {
-            val insertionIndex = Collections.binarySearch(title, it)
-            val index = if (insertionIndex >= 0) insertionIndex else -insertionIndex - 1
-            title.add(index, it)
-            filteredData.add(index, it)
+            if (bookList.isEmpty()) {
+                bookList.add(it)
+                filteredData.add(it)
+            } else {
+                val insertionIndex = Collections.binarySearch(bookList, it) { book1, book2 ->
+                    book1.title.compareTo(book2.title)
+                }
+                val index = if (insertionIndex >= 0) insertionIndex else -insertionIndex - 1
+                bookList.add(index, it)
+                filteredData.add(index, it)
+            }
             notifyDataSetChanged()
         }
     }
+
+
 }
+
