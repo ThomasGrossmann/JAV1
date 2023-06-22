@@ -6,13 +6,13 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp">
+        android:layout_height="match_parent">
         
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:padding="10dp"
             android:background="@drawable/box">
 
             <TextView
@@ -23,21 +23,21 @@
                 android:padding="10dp"
                 android:textAlignment="center"
                 android:text="Title PO"
-                android:lines="2"
+                android:maxLines="2"
                 android:textColor="@color/black"
                 android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/text_author_po"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:fontFamily="@font/inika_bold"
                 android:padding="10dp"
                 android:textAlignment="center"
                 android:text="Author PO"
-                android:lines="2"
+                android:lines="1"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/text_isbn_po"
@@ -48,7 +48,7 @@
                 android:textAlignment="center"
                 android:text="ISBN PO"
                 android:textColor="@color/whiteIdle"
-                android:textSize="14sp" />
+                android:textSize="11sp" />
 
         </LinearLayout>
         
