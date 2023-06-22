@@ -12,7 +12,22 @@
         android:id="@+id/editTextBookTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:hint="Title" />
+
+    <EditText
+        android:id="@+id/editTextBookAuthor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:hint="Author" />
+
+    <EditText
+        android:id="@+id/editTextBookIsbn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:hint="ISBN" />
 
     <Button
         android:id="@+id/buttonAddBook"
