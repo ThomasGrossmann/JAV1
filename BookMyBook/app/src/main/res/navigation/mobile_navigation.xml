@@ -19,9 +19,9 @@
 
     <fragment
         android:id="@+id/navigation_bookings"
-        android:name="com.example.bookmybook.ui.bookings.BookingsFragment"
+        android:name="com.example.bookmybook.ui.rents.RentsFragment"
         android:label="@string/title_bookings"
-        tools:layout="@layout/fragment_bookings" />
+        tools:layout="@layout/fragment_rents" />
 
     <fragment
         android:id="@+id/navigation_scan"
