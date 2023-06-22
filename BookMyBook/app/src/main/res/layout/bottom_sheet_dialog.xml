@@ -3,36 +3,38 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
-
-    <!-- Add your input fields and other UI components for adding a book -->
-    <!-- For example, an EditText for book title and an Add button -->
+    android:padding="30dp">
 
     <EditText
         android:id="@+id/editTextBookTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
+        android:fontFamily="@font/inika_bold"
         android:hint="Title" />
 
     <EditText
         android:id="@+id/editTextBookAuthor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
+        android:fontFamily="@font/inika_bold"
+        android:layout_marginTop="20dp"
         android:hint="Author" />
 
     <EditText
         android:id="@+id/editTextBookIsbn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
+        android:fontFamily="@font/inika_bold"
+        android:layout_marginTop="20dp"
         android:hint="ISBN" />
 
     <Button
         android:id="@+id/buttonAddBook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add" />
+        android:fontFamily="@font/inika_bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
+        android:text="Add new book" />
 
 </LinearLayout>
